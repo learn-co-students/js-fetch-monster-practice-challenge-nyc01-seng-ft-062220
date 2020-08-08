@@ -66,15 +66,14 @@ document.addEventListener('click', e =>{
         let dirID = "forward"
         changePage(dirID)
     }
-    if (e.target.matches("#monster-create")){ //this if condition is so important!  
+    if (e.target.matches("#monster-create")){ //Important condition! the click event is storing each click, thus creating muliple submits
         const monsterForm = document.getElementById("monster-form")
         monsterForm.addEventListener('submit', e => {
          e.preventDefault();
          let name = monsterForm.querySelector("#name").value
-         let age = document.querySelector("#age").value
+         let age = monsterForm.querySelector("#age").value
          let description= monsterForm.querySelector("#description").value  
          let newMonster = {'name': name, 'age': age, 'description': description} 
-
          addMonster(newMonster);
         
         })
