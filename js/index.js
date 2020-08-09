@@ -2,9 +2,9 @@
  
 document.addEventListener("DOMContentLoaded",  loadAllMonsters(), loadForm() )
 
-function loadAllMonsters() {
+function loadAllMonsters(nextPage) {
     
-fetch("http://localhost:3000/monsters/?_limit=5&_page=1")
+fetch("http://localhost:3000/monsters/?_limit=5&_page=" + nextPage)
 .then(resp => resp.json())
 .then(monsters => {monsters.forEach(mon => {loadMonster(mon) } 
 ) } ) 
@@ -54,13 +54,21 @@ method: "POST",
 
 
 
-// deliverable 3 (not done)
+// deliverable 3 (not correct: "forward" button loads 5 more monsters )
  
 let back = document.querySelector("#back");
-back.addEventListener("click", function(){console.log("l")} )
+back.addEventListener("click", function(){loadPreviousPage()} )
+function loadPreviousPage() {nextPage = nextPage - 1; loadAllMonsters(nextPage)
+}
+
 
 
 let forward = document.querySelector("#forward");
 forward.addEventListener("click", function(){loadNextPage()} )
+
+let nextPage = 1
+function loadNextPage() {nextPage = nextPage + 1 ; loadAllMonsters(nextPage) 
+}
+
 
  
