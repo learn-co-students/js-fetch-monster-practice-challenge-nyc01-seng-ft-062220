@@ -7,7 +7,7 @@
 document.addEventListener('DOMContentLoaded', function(e) {
 
     let page = 1
-// let limitUrl = `http://localhost:3000/monsters/?_limit=10&_page=${page}`
+    let setUrl = `http://localhost:3000/`
 
 
 
@@ -39,15 +39,15 @@ document.addEventListener('DOMContentLoaded', function(e) {
         }
 
         document.addEventListener("click", function(e) {
-            const fwdBtn = document.getElementById('forward')
-            const backBtn = document.getElementById('back')
+            let fwdBtn = document.getElementById('forward'),
+                backBtn = document.getElementById('back');
             if (e.target === fwdBtn) {
                 const pageMonsters = document.getElementById('monster-container').childNodes.length
                 console.log(pageMonsters)
-                page += 1
+                page++
                 console.log(page)
                 console.log(`http://localhost:3000/monsters/?_limit=50&_page=${page}`)
-                getMonsters()
+                getMonsters(page)
             } else if (e.target === backBtn && page !== 1) {
                 page -= 1
                 console.log(page)
@@ -61,31 +61,30 @@ document.addEventListener('DOMContentLoaded', function(e) {
    
 
     function createForm() {
-        const newMonForm = document.createElement('form')
-        const nameInput = document.createElement("input")
-        const ageInput = document.createElement("input")
-        const descriptionInput = document.createElement("input")
-        const btnSubmit = document.createElement("button")
+        let newMonForm = document.createElement('form'),
+            nameInput = document.createElement("input"),
+            ageInput = document.createElement("input"),
+            descriptionInput = document.createElement("input"),
+            btnSubmit = document.createElement("button");
 
-        newMonForm.setAttribute('id', 'create-monster-form')
+        newMonForm.id = 'create-monster-form',
 
-        nameInput.setAttribute('id', 'name')
-            nameInput.setAttribute('placeholder', 'name...')
-                nameInput.setAttribute('value', "")
+        nameInput.id = 'name',
+            nameInput.placeholder = 'name...',
+                nameInput.value = "",
        
-        ageInput.setAttribute('id', 'age')
-            ageInput.setAttribute('placeholder', 'age...')
-                ageInput.setAttribute('value', "")
+        ageInput.id= 'age',
+            ageInput.placeholder = 'age...',
+                ageInput.value = "",
     
-        descriptionInput.setAttribute('id', 'description')
-            descriptionInput.setAttribute('placeholder', 'description...')
-                descriptionInput.setAttribute('value', "")
+        descriptionInput.id = 'description',
+            descriptionInput.placeholder = 'description...',
+                descriptionInput.value = "",
   
-        btnSubmit.textContent = ('Create')
-            btnSubmit.setAttribute('id', 'create')
+        btnSubmit.textContent = 'Create',
+            btnSubmit.id= 'create',
 
         formDiv.appendChild(newMonForm)
-
         newMonForm.appendChild(nameInput)
         newMonForm.appendChild(ageInput)
         newMonForm.appendChild(descriptionInput)
@@ -95,11 +94,11 @@ document.addEventListener('DOMContentLoaded', function(e) {
     }
 
         document.addEventListener("submit", function(e){
-            const monstForm = document.getElementById('create-monster-form')
-            const name = monstForm.name.value
-            const age = monstForm.age.value
-            const description = monstForm.description.value
-            const monsterObj = { name: name, age: age, description: description}
+            let monstForm = document.getElementById('create-monster-form'),
+                name = monstForm.name.value,
+                age = monstForm.age.value,
+                description = monstForm.description.value,
+                monsterObj = { name: name, age: age, description: description};
             createMonster(monsterObj)
         })
 
