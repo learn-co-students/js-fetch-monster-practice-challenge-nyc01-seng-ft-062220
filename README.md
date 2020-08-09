@@ -74,7 +74,7 @@ Create a monster
 
 ```text
 POST http://localhost:3000/monsters
-headers: 
+headers:
 {
   "Content-Type": "application/json",
   Accept: "application/json"
