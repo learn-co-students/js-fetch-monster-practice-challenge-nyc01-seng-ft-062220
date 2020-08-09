@@ -1,9 +1,11 @@
+var CURRENT_PAGE;
+
 const init = () => {
     document.addEventListener("DOMContentLoaded", ()=>{
 
 
-        const renderCurrentPage = async () => {
-            const monstersObj = await apiCommunication.getMonsters();
+        const renderCurrentPage = async (pageNum) => {
+            const monstersObj = await apiCommunication.getMonsters(pageNum);
             const frag = new DocumentFragment();
 
             // debugger;
@@ -18,7 +20,8 @@ const init = () => {
                 `
                 frag.appendChild(div);
             }
-            document.getElementById("monster-container").appendChild(frag);
+            const monsterContainer = document.getElementById("monster-container");
+            monsterContainer.appendChild(frag);
         }
 
         const createMonsterForm = ()=>{
@@ -38,9 +41,9 @@ const init = () => {
             const formMonsterAgeLabel = document.createElement("label");
             formMonsterAgeLabel.innerHTML = `Age: `;
             const formMonsterAge = document.createElement("input");
-            formMonsterAge.setAttribute("type", "text");
+            formMonsterAge.setAttribute("type", "number");
             formMonsterAge.setAttribute("name", "age");
-            form.appendChild(formMonsterAgeLabel)
+            form.appendChild(formMonsterAgeLabel);
             form.appendChild(formMonsterAge);
         
             const formMonsterDescriptionLabel = document.createElement("label");
@@ -48,7 +51,7 @@ const init = () => {
             const formMonsterDescription = document.createElement("input");
             formMonsterDescription.setAttribute("type", "text");
             formMonsterDescription.setAttribute("name", "description");
-            form.appendChild(formMonsterDescriptionLabel)
+            form.appendChild(formMonsterDescriptionLabel);
             form.appendChild(formMonsterDescription);
 
             const formMonsterButton = document.createElement("input");
@@ -57,13 +60,13 @@ const init = () => {
             // form.action = "http://localhost:3000/monsters";           
             // form.method = "POST";
 
-            frag.appendChild(form)
+            frag.appendChild(form);
             formDiv.appendChild(frag);
         }
 
         const monsterFormSubmission = () =>{
             const form = document.getElementById("create-monster-form");
-            console.log(form)
+            console.log(form);
             form.addEventListener("submit", e => {
                 e.preventDefault();
 
@@ -77,29 +80,79 @@ const init = () => {
                     description: fDescription
                 }
 
-                debugger;
+                // debugger;
                 apiCommunication.createMonster(monsterFormObj);
 
             })
         }
 
+        const pageHandler = () =>{
+            const monsterContainer = document.getElementById("monster-container");
+            const backBtn = document.getElementById("back");
+            const forwardBtn = document.getElementById("forward");
+
+            backBtn.addEventListener("click", e => {
+                switch (CURRENT_PAGE - 1) {
+                    case 0:
+                        console.log("This is the first page.")
+                        break;
+                    default:
+                        backAction();
+                        break;
+                }
+            });
+
+            forwardBtn.addEventListener("click", e => {
+                switch (CURRENT_PAGE + 1) {
+                    case 0:
+                        console.log("This is the first page.");
+                        break;
+                    default:
+                        // debugger;
+                        forwardAction();
+                        break;
+                }
+            });
+
+            const backAction = () => {
+                let previousPage = CURRENT_PAGE - 1;
+                removeAllChildNodes(monsterContainer);
+                renderCurrentPage(previousPage);
+            };
+
+            const forwardAction = () => {
+                let nextPage = CURRENT_PAGE + 1;
+                removeAllChildNodes(monsterContainer);
+                renderCurrentPage(nextPage);
+            };
+
+             // helper method for re-rendering pages
+            const removeAllChildNodes = (parent) => {
+                while (parent.firstChild) {
+                parent.removeChild(parent.firstChild);
+                }
+            }
+        }
+
         renderCurrentPage();
         createMonsterForm();
         monsterFormSubmission();
+        pageHandler();
     })
 }
 
 const apiCommunication = {
 
-    getMonsters: async () => {
-        const limit = 50
-        const page = 1;
+    getMonsters: async (page=1) => {
+        const limit = 50;
         const url = `http://localhost:3000/monsters/?_limit=${limit}&_page=${page}`
 
         let response = await fetch(url);
+        let responseUrl = await response.url;
+        CURRENT_PAGE = parseInt(responseUrl.match(/page=[0-9]/)[0].split("=")[1]);
+        console.log(`${CURRENT_PAGE}`);
         let monsters = await response.json();
         return monsters;
-        
     },
 
     createMonster: async (monsterForm) => {
