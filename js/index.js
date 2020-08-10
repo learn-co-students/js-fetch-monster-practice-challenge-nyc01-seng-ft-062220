@@ -67,38 +67,45 @@ document.addEventListener("DOMContentLoaded", function(e){
     })//eventListener
     
   }//addForm
-  
+
+  // debugger
   addForm()
   
+  // debugger
   // let page_url = `http://localhost:3000/monsters/?_limit=50&_page=${pageNumber}`
   
-  debugger
   
-  let pageNumber = base_link.charAt(48)
-  let newPageNumberF = pageNumber+1
-  let newPageNumberB = pageNumber-1
+  // let pageNumber = parseInt(base_link.charAt(48))
+
   
+  let currentPage = 2
   document.addEventListener("click", function(e){
+
     if (e.target.id ==="forward")
     {
-      let newPageUrlF = `http://localhost:3000/monsters/?_limit=50&_page=${newPageNumberF}`
+      let newPageUrlF = `http://localhost:3000/monsters/?_limit=50&_page=${currentPage}`
 
       fetch(newPageUrlF)
       .then(resp =>resp.json())
+      // .then(console.log(resp.url))
       .then(monsters => monsters.forEach(monster =>{
      renderMonsters(monster)
-     })
+    })
+    
     )
-      
+
+    currentPage= currentPage+1
+    
     } else if (e.target.id==="back"){
-      let newPageUrlB = `http://localhost:3000/monsters/?_limit=50&_page=${newPageNumberB}`
+      let newPageUrlB = `http://localhost:3000/monsters/?_limit=50&_page=${currentPage}`
 
       fetch(newPageUrlB)
       .then(resp =>resp.json())
       .then(monsters => monsters.forEach(monster =>{
      renderMonsters(monster)
-     })
+    })
     )
+    currentPage=currentPage-1
   }
   // debugger
 })
