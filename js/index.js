@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const postHandler = () => {
         document.addEventListener('submit', (event) => {
-            console.dir(document)
+            // console.dir(document)
             event.preventDefault()
             const newForm = event.target 
 
