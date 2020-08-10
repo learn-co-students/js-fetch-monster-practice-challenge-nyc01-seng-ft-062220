@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const forward = document.querySelector("#forward")
     const back = document.getElementById('back')
     let page = 1 
-    'http://localhost:3000/monsters/?_limit=20&_page=3'
+    
     function fetchMonsters(pageNum = 1) {
         fetch(`http://localhost:3000/monsters/?_limit=50&_page=${pageNum}`)
         .then(response => response.json())
